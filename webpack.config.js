@@ -1,36 +1,36 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist')
-  },
+	entry: './src/index.js',
+	output: {
+		path: path.join(__dirname, 'build'),
+		filename: 'bundle.js',
+		publicPath: '/build/'
+	},
 
-  watch: true,
+	devtool: 'source-map',
+	mode: 'development',
 
-  module: {
-    rules: [
-        // {
-        //     test: /\.js/,
-        //     use: [
-        //         {
-        //             loader: 'babel-loader',
-        //             options: { presets: ["env"] }
-        //         }
-        //     ]
-        // },
+	module: {
+		rules: [
+			{
+				test: /\.js/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: { presets: ["env"] }
+					}
+				]
+			},
 
-        {
-            test: /\.less$/,
-            use: [{
-              loader: 'style-loader' // creates style nodes from JS strings
-            }, {
-              loader: 'css-loader' // translates CSS into CommonJS
-            }, {
-              loader: 'less-loader' // compiles Less to CSS
-            }]
-    }
-    ]
+			{
+            test: /\.scss$/,
+            use: [
+                "style-loader", // creates style nodes from JS strings
+                "css-loader", // translates CSS into CommonJS
+                "sass-loader" // compiles Sass to CSS, using Node Sass by default
+            ]
+        }
+		]
+	}
 }
-};
