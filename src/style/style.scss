@@ -50,6 +50,18 @@
     }
   }
   section{
-    border: 1px solid;
+    border: 1px dotted;
     min-height: 300px;
+    display: flex;
+  }
+  .localWeather{
+    flex: 3;
+  }
+  .currentWeather{
+    flex: 3;
+    border-left: 1px dotted;
+    border-right: 1px dotted;
+  }
+  .locationStory{
+    flex: 1;
   }
