@@ -7,7 +7,7 @@ let fillWeatherData = (data, element) => {
     let pressure = document.createElement('p');
 
     location.innerHTML = `${data.name},${data.sys.country}`;
-    temp.innerHTML = `Temperature: ${data.main.temp} F`;
+    temp.innerHTML = `Temperature: ${data.main.temp}°C`;
     weather.innerHTML = `Weather: ${data.weather[0].description}`;
     pressure.innerHTML = `Pressure: ${data.main.pressure}`;
 
@@ -15,6 +15,9 @@ let fillWeatherData = (data, element) => {
     container.appendChild(temp);
     container.appendChild(weather);
     container.appendChild(pressure);
+
+    container.classList.add('weatherPanel');
+    temp.classList.add('viewTemp');
 
     element.appendChild(container);
 }

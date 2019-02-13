@@ -86,6 +86,67 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/addData.js":
+/*!************************!*\
+  !*** ./src/addData.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var fillWeatherData = function fillWeatherData(data, element) {
+
+    var container = document.createElement('div');
+    var location = document.createElement('h3');
+    var temp = document.createElement('p');
+    var weather = document.createElement('p');
+    var pressure = document.createElement('p');
+
+    location.innerHTML = data.name + ',' + data.sys.country;
+    temp.innerHTML = 'Temperature: ' + data.main.temp + ' F';
+    weather.innerHTML = 'Weather: ' + data.weather[0].description;
+    pressure.innerHTML = 'Pressure: ' + data.main.pressure;
+
+    container.appendChild(location);
+    container.appendChild(temp);
+    container.appendChild(weather);
+    container.appendChild(pressure);
+
+    element.appendChild(container);
+};
+
+exports.fillWeatherData = fillWeatherData;
+
+/***/ }),
+
+/***/ "./src/getData.js":
+/*!************************!*\
+  !*** ./src/getData.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = getData;
+function getData(url, appid, city) {
+
+  return fetch(url + "q=" + city + "&appid=" + appid).then(function (response) {
+    return response.json();
+  });
+}
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -96,24 +157,47 @@
 "use strict";
 
 
-__webpack_require__(/*! ./styles/style.css */ "./src/styles/style.css");
+var _getData = __webpack_require__(/*! ./getData */ "./src/getData.js");
 
-var element = document.createElement('div');
+var _getData2 = _interopRequireDefault(_getData);
 
-element.innerHTML = "Hi!";
+var _addData = __webpack_require__(/*! ./addData */ "./src/addData.js");
 
-document.body.appendChild(element);
+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './style/style.less'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
-/***/ }),
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/***/ "./src/styles/style.css":
-/*!******************************!*\
-  !*** ./src/styles/style.css ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+var buttonSearch = document.querySelector('.btnSearch');
+// import './style/style.scss';
 
-throw new Error("Module parse failed: Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n> * {\r\n|     margin: 0;\r\n|     padding: 0;\r");
+var inputSearch = document.querySelector('.inputSearch');
+var localWeather = document.querySelector('.localWeather');
+var currentWeather = document.querySelector('.currentWeather');
+
+var url = 'http://api.openweathermap.org/data/2.5/weather?';
+var ipUrl = "https://ipinfo.io/json";
+var corst = 'https://cors.io/?';
+var appid = '361769565b95b84393f71027df69289e';
+
+window.addEventListener('load', function () {
+
+    fetch(corst + ipUrl).then(function (response) {
+        return response.json();
+    }).then(function (_ref) {
+        var city = _ref.city;
+        return (0, _getData2.default)(corst + url, appid, city);
+    }).then(function (data) {
+        return (0, _addData.fillWeatherData)(data, localWeather);
+    });
+});
+
+buttonSearch.addEventListener('click', function (e) {
+    var city = inputSearch.value;
+    inputSearch.value = '';
+    (0, _getData2.default)(corst + url, appid, city).then(function (data) {
+        return (0, _addData.fillWeatherData)(data, currentWeather);
+    });;
+});
 
 /***/ })
 
