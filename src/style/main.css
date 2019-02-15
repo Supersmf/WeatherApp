@@ -2,6 +2,13 @@
   margin: 0;
   padding: 0;
 }
+button,
+input {
+  outline: none;
+}
+button {
+  cursor: pointer;
+}
 html,
 body {
   height: 100%;
@@ -33,12 +40,10 @@ header {
 .searchForm input {
   border-radius: 10px 0 0 10px;
   border: 1px solid #1d365d;
-  outline: none;
   margin-right: 0;
   padding: 2px 10px;
 }
-.searchForm button {
-  outline: none;
+.btnSearch {
   border-radius: 0 10px 10px 0;
   height: 25px;
   margin-left: 0;
@@ -47,7 +52,7 @@ header {
   border: 1px solid #1d365d;
   border-left: 0;
 }
-.searchForm button:hover {
+.btnSearch:hover {
   opacity: 0.5;
 }
 section {
@@ -57,17 +62,24 @@ section {
 }
 .localWeather,
 .currentWeather,
-.locationStory {
-  flex: 3;
+.locationStory,
+.currentWeatherChart {
+  flex: 2;
   padding: 20px;
 }
 .currentWeather {
   border-left: 1px dotted;
   border-right: 1px dotted;
 }
+.currentWeatherChart {
+  flex: 4;
+}
+.locationStory {
+  border-left: 1px dotted;
+}
 .weatherPanel {
   position: relative;
-  background-color: whitesmoke;
+  background-color: #f5f5f5;
   padding: 20px;
   box-sizing: border-box;
   border-radius: 50px;
@@ -79,20 +91,38 @@ section {
 .searchForm {
   position: relative;
 }
-.tempType {
+.btnUnit {
+  width: 30px;
   position: absolute;
   right: 20px;
   top: 50%;
   transform: translate3d(0, -50%, 0);
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid gray;
 }
-.btnAddToStorage {
+.btnUnit:hover {
+  background-color: #eceaea;
+}
+.btnRemoveItem {
   position: absolute;
-  top: 30px;
-  right: 30px;
-  padding: 3px;
+  top: 5px;
+  right: 10px;
+  width: 30px;
   border-radius: 8px;
+  border: 1px solid grey;
 }
-.btnAddToStorage:hover {
+.btnRemoveItem:hover {
   background-color: #eceaea;
   transform: scale(1.1);
+}
+.storageWeatherPanel {
+  position: relative;
+  background-color: #f5f5f5;
+  opacity: 0.5;
+  box-sizing: border-box;
+  border: 1px solid silver;
+  margin: 2px 0;
+  border-radius: 10px;
+  padding: 5px;
 }

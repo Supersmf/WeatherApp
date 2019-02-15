@@ -1,9 +1,18 @@
 @colorHeader: #1d365d;
 @colorContent: #f0ffff;
 @colorFooter: #a9a9a9;
+@colorPanel: #f5f5f5;
+
 * {
     margin: 0;
     padding: 0;
+}
+
+button, input {
+    outline: none;
+}
+button {
+    cursor: pointer;
 }
 
 html,
@@ -41,22 +50,20 @@ header {
     input {
         border-radius: 10px 0 0 10px;
         border: 1px solid @colorHeader;
-        outline: none;
         margin-right: 0;
         padding: 2px 10px;
     }
-    button {
-        outline: none;
-        border-radius: 0 10px 10px 0;
-        height: 25px;
-        margin-left: 0;
-        padding-left: 5px;
-        padding-right: 8px;
-        border: 1px solid @colorHeader;
-        border-left: 0;
-        &:hover {
-            opacity: 0.5;
-        }
+}
+.btnSearch{
+    border-radius: 0 10px 10px 0;
+    height: 25px;
+    margin-left: 0;
+    padding-left: 5px;
+    padding-right: 8px;
+    border: 1px solid @colorHeader;
+    border-left: 0;
+    &:hover {
+        opacity: 0.5;
     }
 }
 
@@ -68,8 +75,9 @@ section {
 
 .localWeather,
 .currentWeather,
-.locationStory {
-    flex: 3;
+.locationStory,
+.currentWeatherChart {
+    flex: 2;
     padding: 20px;
 }
 
@@ -77,10 +85,16 @@ section {
     border-left: 1px dotted;
     border-right: 1px dotted;
 }
+.currentWeatherChart{
+    flex: 4;
+}
+.locationStory{
+    border-left: 1px dotted;
+}
 
 .weatherPanel {
     position: relative;
-    background-color: whitesmoke;
+    background-color: @colorPanel;
     opacity: 0.5;
     padding: 20px;
     box-sizing: border-box;
@@ -88,30 +102,49 @@ section {
     height: 100%;
     border: 1px solid silver;
     opacity: 0.5;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);    
 }
 
 .searchForm {
     position: relative;
 }
 
-.tempType {
+.btnUnit {
+    width: 30px;
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translate3d(0, -50%, 0);
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    &:hover {
+        background-color: rgb(236, 234, 234);
+    }
 }
 
-.btnAddToStorage {
+.btnRemoveItem {
     position: absolute;
-    top: 30px;
-    right: 30px;
-    padding: 3px;
+    top: 5px;
+    right: 10px;
+    // padding: 3px;
+    width: 30px;
     border-radius: 8px;
+    border: 1px solid grey;
     &:hover {
         background-color: rgb(236, 234, 234);
         transform: scale(1.1);
         
     }
+}
+
+.storageWeatherPanel{
+    position: relative;
+    background-color: @colorPanel;
+    opacity: 0.5;
+    box-sizing: border-box;
+    border: 1px solid silver;
+    margin: 2px 0;
+    border-radius: 10px;
+    padding: 5px;
 }

@@ -5,23 +5,17 @@ let fillWeatherData = (data, element) => {
     let temp = document.createElement('p');
     let weather = document.createElement('p');
     let pressure = document.createElement('p');
-    let addToStorage = document.createElement('button');
+    
 
     location.innerHTML = `${data.name}, ${data.sys.country}`;
     temp.innerHTML = `Temperature: <span class="viewTemp">${data.main.temp} °C</span> `;
     weather.innerHTML = `Weather: ${data.weather[0].description}`;
-    pressure.innerHTML = `Pressure: ${data.main.pressure}`;
-
-    // temp.classList.add('viewTemp');
-    addToStorage.classList.add('btnAddToStorage');
-
-    addToStorage.innerHTML = 'Add';
+    pressure.innerHTML = `Pressure: ${data.main.pressure}`;   
 
     container.appendChild(location);
     container.appendChild(temp);
     container.appendChild(weather);
     container.appendChild(pressure);
-    // container.appendChild(addToStorage);
 
     container.classList.add('weatherPanel');
     
@@ -35,12 +29,18 @@ let fillWeatherData = (data, element) => {
 let fillStoryData = (data, element) => {
     let container = document.createElement('div');
     let temp = document.createElement('p');
+    let removeItem = document.createElement('button');
 
-    location.innerHTML = `${data.name}, ${data.sys.country}`;
+    removeItem.innerHTML = 'x';
+
     temp.innerHTML = `${data.name}, ${data.sys.country}  <span class="viewTemp">${data.main.temp} °C</span>`;
 
-    container.appendChild(temp);
-    
+    removeItem.classList.add('btnRemoveItem'); 
+    container.classList.add('storageWeatherPanel');
+    container.setAttribute('cityId', data.id);
+
+    container.appendChild(removeItem);
+    container.appendChild(temp);    
     element.appendChild(container);
 }
 
