@@ -971,9 +971,27 @@ var getForecastData = function getForecastData(url, appid, city, unit) {
   });
 };
 
+var getLocation = function getLocation(url, appid) {
+  // if(navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(function (position) {
+    var lon = position.coords.longitude || 27.58;
+    var lat = position.coords.latitude || 53.89;
+
+    //  console.log(`${url}weather?lat=${lat}&lon=${lon}&appid=${appid}`);
+
+    return fetch(url + "weather?lat=" + lat + "&lon=" + lon + "&appid=" + appid).then(function (response) {
+      return response.json();
+    });
+  });
+
+  //  }
+  //  return () => 'res';
+};
+
 exports.getSingleData = getSingleData;
 exports.getMultiData = getMultiData;
 exports.getForecastData = getForecastData;
+exports.getLocation = getLocation;
 
 /***/ }),
 
@@ -1027,6 +1045,10 @@ window.addEventListener("load", function () {
     return data.list.forEach(function (item) {
       return (0, _addData.fillStoryData)(item, locationStory);
     });
+  });
+
+  (0, _getData.getLocation)(corst + urlWeather, appid).then(function (res) {
+    return console.log(res);
   });
 });
 

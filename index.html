@@ -6,29 +6,32 @@
 </head>
 
 <body>
-  <div class="wrapper">
-    <header></header>
-    <main class="content">
-      <div class="searchForm">
-            <input class="inputSearch">
-            <button class="btnSearch">Search</button>
-            <button class="btnUnit">°F</button>
-            <!-- <input type="button" class="tempType"> -->
-      </div>
-      <nav></nav>
-      <section class="weatherView">
-        <article class="localWeather">
-          <!-- <h2>Local Weather</h2> -->
-        </article>
-        <article class="currentWeather"></article>
-        <article class="currentWeatherChart"></article>
-        <article class="locationStory"></article>
-      </section>
-    </main>
+  <!-- <div id="root"></div> -->
+ <div class="wrapper">
+   <header></header>
+  <main class="content">
+    <div class="searchForm">
+          <input class="inputSearch">
+          <button class="btnSearch">Search</button>
+          <button class="btnUnit">°F</button>
+    </div>
+    <nav></nav>
+    <section class="weatherView">
+      <article class="localWeather">
+        <!-- <h2>Local Weather</h2> -->
+      </article>
 
-    <div class="footer"></div>
+      <article class="currentWeather"></article>
+      <article class="currentWeatherChart">
+          <canvas id="currentWeatherChart" class="drawCharts"></canvas>
+      </article>
+      <article class="locationStory"></article>
+    </section>
+  </main> 
 
-  </div>
+  <footer class="footer"></footer>
+
+</div>
   <script src="build/bundle.js"></script>
 </body>
 
