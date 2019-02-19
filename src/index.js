@@ -1,6 +1,7 @@
 import { getSingleData, getMultiData, getForecastData, getLocalWeather } from './services/api';
 import { getLocalHistory, addToLocalStorage, removeFromLocalStorage } from './services/storage';
-import { changeTemp } from './services/dom.utils';
+import { drawLocalWeatherPanel, drawStorageWeatherPanel, drawSearchWeatherPanel } from './renderWeatherPanel';
+import { changeTemp } from './utils/dom.utils';
 import { fillWeatherData, fillStoryData, drawPage } from './drawHtml';
 import { drawWeatherCharts } from './drawCharts';
 
@@ -18,15 +19,9 @@ let isMetric = true; // units: true - °C, false - °F
 
 // drawPage();
 
-
 window.addEventListener('load', () => {
-  getLocalWeather(isMetric, fillWeatherData).then(data => fillWeatherData(data, localWeather));
-
-  if (getLocalHistory()) {
-    getMultiData(getLocalHistory(), isMetric)
-      .then(data => data.list.forEach(item => fillStoryData(item, locationStory)));
-  }
-  // drawWeatherCharts(currentWeatherChart).getContext('2d');
+  drawLocalWeatherPanel(localWeather);
+  drawStorageWeatherPanel(locationStory);
 });
 
 function search() {
@@ -50,7 +45,4 @@ function search() {
 
 locationStory.addEventListener('click', e => removeFromLocalStorage(e, localStorage));
 inputSearch.addEventListener('change', search);
-btnUnit.addEventListener('click', (e) => {
-  changeTemp(e, isMetric);
-  isMetric = !isMetric;
-});
+btnUnit.addEventListener('click', changeTemp);
