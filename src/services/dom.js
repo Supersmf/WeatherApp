@@ -1,5 +1,6 @@
-const creatElement = (type, parent, inrHtml, className, attribute) => {
+const buildElement = (type, parent, inrHtml, className, attribute, event) => {
   const element = document.createElement(type);
+
   if (inrHtml) {
     element.innerHTML = inrHtml;
   }
@@ -9,6 +10,9 @@ const creatElement = (type, parent, inrHtml, className, attribute) => {
   if (attribute) {
     element.setAttribute(attribute.name, attribute.content);
   }
+  if (event) {
+    element.addEventListener('click', event);
+  }
   if (parent) {
     parent.appendChild(element);
   } else {
@@ -17,6 +21,12 @@ const creatElement = (type, parent, inrHtml, className, attribute) => {
   return null;
 };
 
+const getDomElement = str => document.querySelector(str);
+
+const getAllDomElement = str => document.querySelectorAll(str);
+
 export {
-  creatElement,
+  buildElement,
+  getDomElement,
+  getAllDomElement,
 };

@@ -1,48 +1,23 @@
-import { getSingleData, getMultiData, getForecastData, getLocalWeather } from './services/api';
-import { getLocalHistory, addToLocalStorage, removeFromLocalStorage } from './services/storage';
 import { drawLocalWeatherPanel, drawStorageWeatherPanel, drawSearchWeatherPanel } from './renderWeatherPanel';
 import { changeTemp } from './utils/dom.utils';
-import { fillWeatherData, fillStoryData, drawPage } from './drawHtml';
-import { drawWeatherCharts } from './drawCharts';
+import { drawPage } from './drawHtml';
+import { getDomElement } from './services/dom';
 
 import './style/main.css';
 
-const root = document.querySelector('#root');
-const inputSearch = document.querySelector('.inputSearch');
-const localWeather = document.querySelector('.localWeather');
-const currentWeather = document.querySelector('.currentWeather');
-const locationStory = document.querySelector('.locationStory');
-const btnUnit = document.querySelector('.btnUnit');
-const weatherChart = document.getElementById('currentWeatherChart');
+const root = getDomElement('#root');
 
-let isMetric = true; // units: true - °C, false - °F
 
-// drawPage();
+drawPage(root);
 
 window.addEventListener('load', () => {
+  const inputSearch = getDomElement('.inputSearch');
+  const localWeather = getDomElement('.localWeather');
+  const locationStory = getDomElement('.locationStory');
+  const btnUnit = getDomElement('.btnUnit');
+
   drawLocalWeatherPanel(localWeather);
   drawStorageWeatherPanel(locationStory);
+  inputSearch.addEventListener('change', drawSearchWeatherPanel);
+  btnUnit.addEventListener('click', changeTemp);
 });
-
-function search() {
-  const city = inputSearch.value;
-  inputSearch.value = '';
-  inputSearch.placeholder = '';
-
-  getSingleData(city, isMetric)
-    .then((data) => {
-      fillWeatherData(data, currentWeather);
-      if (addToLocalStorage(data)) {
-        fillStoryData(data, locationStory);
-      }
-    })
-    // eslint-disable-next-line no-return-assign
-    .catch(() => (inputSearch.placeholder = 'Wrong.Type correct place.'));
-
-  getForecastData(city, isMetric)
-    .then(res => drawWeatherCharts(res, weatherChart));
-}
-
-locationStory.addEventListener('click', e => removeFromLocalStorage(e, localStorage));
-inputSearch.addEventListener('change', search);
-btnUnit.addEventListener('click', changeTemp);

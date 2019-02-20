@@ -1,11 +1,16 @@
-import { creatElement } from './services/dom';
+import { buildElement } from './services/dom';
+import { removeFromPanel } from './utils/dom.utils';
+import renderHeader from './components/header';
+import renderContent from './components/content';
+import renderFooter from './components/footer';
+
 
 const fillWeatherData = (data, element) => {
-  const container = creatElement('div', null, null, 'weatherPanel');
-  creatElement('h3', container, `${data.name}, ${data.sys.country}`);
-  creatElement('p', container, `Temperature: <span class="viewTemp">${data.main.temp} °C</span> `);
-  creatElement('p', container, `Weather: ${data.weather[0].description}`);
-  creatElement('p', container, `Pressure: ${data.main.pressure}`);
+  const container = buildElement('div', null, null, 'weatherPanel');
+  buildElement('h3', container, `${data.name}, ${data.sys.country}`);
+  buildElement('p', container, `Temperature: <span class="viewTemp">${data.main.temp} °C</span> `);
+  buildElement('p', container, `Weather: ${data.weather[0].description}`);
+  buildElement('p', container, `Pressure: ${data.main.pressure}`);
 
   if (element.firstChild) element.removeChild(element.firstChild);
 
@@ -13,40 +18,20 @@ const fillWeatherData = (data, element) => {
 };
 
 const fillStoryData = (data, element) => {
-  const container = creatElement('div', null, null, 'storageWeatherPanel', { name: 'cityId', content: data.id });
-  creatElement('p', container, `${data.name}, ${data.sys.country}  <span class="viewTemp">${data.main.temp} °C</span>`);
-  creatElement('button', container, 'x', 'btnRemoveItem');
+  const container = buildElement('div', null, null, 'storageWeatherPanel');
+  buildElement('p', container, `${data.name}, ${data.sys.country}  <span class="viewTemp">${data.main.temp} °C</span>`);
+  buildElement('button', container, 'x', 'btnRemoveItem', { name: 'cityId', content: data.id }, removeFromPanel);
 
   element.appendChild(container);
 };
 
-const drawHeader = (root) => {
-  creatElement('header', root);
-};
+const drawPage = (root) => {
+  const wrapper = root;
 
-const drawContent = (root) => {
-  const main = creatElement('main', root, null, 'content');
-  const searchForm = creatElement('div', main, null, 'searchForm');
-  const section = creatElement('section', main, null, 'weatherView');
-  creatElement('input', searchForm, null, 'inputSearch');
-  creatElement('button', searchForm, 'Search', 'btnSearch');
-  creatElement('button', searchForm, '°F', 'btnUnit');
-  creatElement('article', section, null, 'localWeather');
-  creatElement('article', section, null, 'currentWeather');
-  creatElement('article', section, null, 'currentWeatherChart');
-  creatElement('article', section, null, 'locationStory');
-  creatElement('nav', main);
-};
-
-const drawFooter = (root) => {
-  creatElement('footer', root, null, 'footer');
-};
-
-const drawPage = (root) => {  
-  const wrapper = creatElement('div', root, null, 'wrapper');
-  drawHeader(wrapper);
-  drawContent(wrapper);
-  drawFooter(wrapper);
+  wrapper.classList.add('wrapper');
+  renderHeader(wrapper);
+  renderContent(wrapper);
+  renderFooter(wrapper);
 };
 
 export {

@@ -1,4 +1,5 @@
 import { getMetric, changeMetric } from '../services/props';
+import { removeFromLocalStorage } from '../services/storage';
 
 const changeTemp = (event) => {
   const temp = document.querySelectorAll('.viewTemp');
@@ -25,21 +26,23 @@ const changeTemp = (event) => {
 
 const getInputValue = (element) => {
   const text = element.value;
-  element.value = '';
-  element.placeholder = '';
+  const el = element;
+  el.value = '';
+  el.placeholder = '';
 
   return text;
 };
 
-// const root = document.querySelector('#root');
-// const inputSearch = document.querySelector('.inputSearch');
-// const localWeather = document.querySelector('.localWeather');
-// const currentWeather = document.querySelector('.currentWeather');
-// const locationStory = document.querySelector('.locationStory');
-// const btnUnit = document.querySelector('.btnUnit');
-// const weatherChart = document.getElementById('currentWeatherChart');
+const removeFromPanel = ({ target }) => {
+  const btnAttr = target.getAttribute('cityID');
+  const parentElem = target.parentElement;
+
+  removeFromLocalStorage(+btnAttr);
+  parentElem.parentElement.removeChild(parentElem);
+};
 
 export {
   changeTemp,
   getInputValue,
+  removeFromPanel,
 };

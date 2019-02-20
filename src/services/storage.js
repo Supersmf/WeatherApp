@@ -1,16 +1,13 @@
 let storage = JSON.parse(localStorage.getItem('city')) || [];
 
 const getLocalHistory = () => storage;
+const setLocalHistory = (arr) => {
+  localStorage.setItem('city', JSON.stringify(arr));
+};
 
-const removeFromLocalStorage = (e) => {
-  if (e.target.tagName === 'BUTTON') {
-    const element = e.target.parentElement;
-    const attrib = +element.getAttribute('cityID');
-
-    storage = storage.filter(el => el !== attrib);
-    localStorage.setItem('city', JSON.stringify(storage));
-    element.parentElement.removeChild(e.target.parentElement);
-  }
+const removeFromLocalStorage = (item) => {
+  storage = storage.filter(el => el !== item);
+  setLocalHistory(storage);
 };
 
 const addToLocalStorage = (data) => {
