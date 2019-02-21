@@ -36,7 +36,7 @@ const drawWeatherCharts = (data, ctx) => {
         label: 'wind speed',
         type: 'line',
         backgroundColor: '#3ecdba',
-        borderColor: '#813ecd',
+
         data: info.wind,
         fill: false,
       }],

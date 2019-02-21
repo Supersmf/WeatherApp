@@ -24,7 +24,7 @@ header {
 }
 .content {
   flex: 1 0 auto;
-  background-color: #f0ffff;
+  background-color: #f0f6ff;
 }
 .footer {
   flex: 0 0 auto;
@@ -32,16 +32,18 @@ header {
   min-height: 80px;
 }
 .searchForm {
-  margin: 15px;
-  height: 25px;
+  height: 50px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: #f0f6ff;
+  position: relative;
 }
 .searchForm input {
   border-radius: 10px 0 0 10px;
   border: 1px solid #1d365d;
   margin-right: 0;
-  padding: 2px 10px;
+  padding: 4px 10px;
 }
 .btnSearch {
   border-radius: 0 10px 10px 0;
@@ -92,15 +94,9 @@ section {
   opacity: 0.5;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
-.searchForm {
-  position: relative;
-}
 .btnUnit {
   width: 30px;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translate3d(0, -50%, 0);
+  margin-left: 20px;
   padding: 4px;
   border-radius: 5px;
   border: 1px solid gray;
@@ -120,6 +116,9 @@ section {
   background-color: #eceaea;
   transform: scale(1.1);
 }
+.btnRemoveItem:active {
+  transform: scale(0.9);
+}
 .storageWeatherPanel {
   position: relative;
   background-color: #f5f5f5;
@@ -136,4 +135,26 @@ section {
 .drawCharts {
   width: 100%;
   height: 100%;
+}
+.groupWeatherContainer {
+  flex: 1;
+}
+.groupChartContainer {
+  flex: 1;
+}
+.addToGroupBtn {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid grey;
+}
+.addToGroupBtn:hover {
+  background-color: #eceaea;
+  transform: scale(1.1);
+}
+.addToGroupBtn:active {
+  transform: scale(0.9);
 }

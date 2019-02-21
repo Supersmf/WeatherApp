@@ -1,5 +1,11 @@
 import { buildElement } from '../services/dom';
 
-export default function drawHeader(root) {
-  buildElement('header', root);
+export default class Header {
+  constructor(root) {
+    this.el = root;
+  }
+
+  render() {
+    buildElement('header', this.el);
+  }
 }

@@ -1,11 +1,13 @@
 const buildElement = (type, parent, inrHtml, className, attribute, event) => {
-  const element = document.createElement(type);
-
+  let element = type;
+  if (typeof element === 'string') {
+    element = document.createElement(type);
+  }
   if (inrHtml) {
     element.innerHTML = inrHtml;
   }
   if (className) {
-    element.classList.add(className);
+    element.classList = className;
   }
   if (attribute) {
     element.setAttribute(attribute.name, attribute.content);
@@ -15,18 +17,16 @@ const buildElement = (type, parent, inrHtml, className, attribute, event) => {
   }
   if (parent) {
     parent.appendChild(element);
-  } else {
-    return element;
   }
-  return null;
+  return element;
 };
 
 const getDomElement = str => document.querySelector(str);
 
-const getAllDomElement = str => document.querySelectorAll(str);
+const getDomElements = str => document.querySelectorAll(str);
 
 export {
   buildElement,
   getDomElement,
-  getAllDomElement,
+  getDomElements,
 };

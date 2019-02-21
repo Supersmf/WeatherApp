@@ -1,5 +1,5 @@
 @colorHeader: #1d365d;
-@colorContent: #f0ffff;
+@colorContent: #f0f6ff;
 @colorFooter: #a9a9a9;
 @colorPanel: #f5f5f5;
 
@@ -43,16 +43,19 @@ header {
 }
 
 .searchForm {
-    margin: 15px;
-    height: 25px;
+    height: 50px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    background-color: @colorContent;
+    position: relative;
     input {
         border-radius: 10px 0 0 10px;
         border: 1px solid @colorHeader;
         margin-right: 0;
-        padding: 2px 10px;
+        padding: 4px 10px;
     }
+    
 }
 .btnSearch{
     border-radius: 0 10px 10px 0;
@@ -106,19 +109,16 @@ section {
     height: 100%;
     border: 1px solid silver;
     opacity: 0.5;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);    
-}
-
-.searchForm {
-    position: relative;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .btnUnit {
     width: 30px;
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translate3d(0, -50%, 0);
+    // position: absolute;
+    // right: 20px;
+    // top: 50%;
+    // transform: translate3d(0, -50%, 0);
+    margin-left: 20px;
     padding: 4px;
     border-radius: 5px;
     border: 1px solid gray;
@@ -140,6 +140,9 @@ section {
         transform: scale(1.1);
         
     }
+    &:active{
+        transform: scale(0.9);
+    }
 }
 
 .storageWeatherPanel{
@@ -159,4 +162,30 @@ section {
 .drawCharts {
     width: 100%;
     height: 100%;
+}
+
+.groupWeatherContainer{
+    flex: 1;
+}
+
+.groupChartContainer{
+    flex: 1;
+}
+
+.addToGroupBtn {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    width: 25px;
+    height: 25px;;
+    border-radius: 50%;
+    border: 1px solid grey;
+    &:hover {
+        background-color: rgb(236, 234, 234);
+        transform: scale(1.1);
+        
+    }
+    &:active{
+        transform: scale(0.9);
+    }
 }
