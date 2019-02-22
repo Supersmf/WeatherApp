@@ -1,6 +1,6 @@
 import { getMetric } from '../services/props';
 import { buildElement } from '../services/dom';
-import { getMultiData } from '../services/api';
+import { getMultiData, getCityDB } from '../services/api';
 import { getLocalHistory } from '../services/storage';
 
 export default class PanelStorageCity {
@@ -20,7 +20,7 @@ export default class PanelStorageCity {
         console.log(chld);
         const temp = chld.querySelector('.viewTemp');
         console.log(temp);
-      })
+      });
       // let { temp } = this.data.main;
       // if (getMetric()) {
       //   temp = data.calcF(temp);
@@ -33,19 +33,23 @@ export default class PanelStorageCity {
 
     render() {
       buildElement('div', this.root, this.template());
-      if (getLocalHistory().length) {
-        getMultiData(getLocalHistory().join(','), getMetric())
-          .then(data => data.list.forEach(item => buildElement('div', this.root, this.add({ detail: item }))));
-      }
+      const store = getLocalHistory();
+
+      getCityDB().then((data) => {
+        let strJSONid = data.reduce((id, item) => `${id},${item.id}`, '');
+        strJSONid = strJSONid.slice(1);
+        getMultiData(`${strJSONid}`, getMetric())
+          .then(items => items.list.forEach(item => buildElement('div', this.root, this.add({ detail: item }))));
+      });
       document.addEventListener('addToLocal', this.add);
       // document.addEventListener('changeUnit', this.changeTemplate);
     }
+
 
     add = ({ detail: data }) => {
       const element = document.querySelector('.storageContainer');
       const template = `
         <p>${data.name}, ${data.sys.country}  <span class="viewTemp">${data.main.temp} °${getMetric() ? 'C' : 'F'}</span></p>
-        <button class="btnRemoveItem" attribute="{ name: 'cityId', content: data.id }">x</button>
     `;
       buildElement('div', element, template, 'storageWeatherPanel');
       document.addEventListener('changeUnit', this.changeTemplate);

@@ -7,7 +7,8 @@
     "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "webpack-dev-server --inline --hot"
+    "dev": "webpack-dev-server --inline --hot",
+    "start": "nodemon ./node/server.js"
   },
   "keywords": [],
   "author": "Oleg",
@@ -30,6 +31,7 @@
     "google-charts": "^2.0.0",
     "less-loader": "^4.1.0",
     "node-sass": "^4.9.3",
+    "nodemon": "^1.18.10",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.22.1",
     "webpack": "^4.17.1",
@@ -39,6 +41,7 @@
   "dependencies": {
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "chart.js": "^2.7.3"
+    "chart.js": "^2.7.3",
+    "express": "^4.16.4"
   }
 }

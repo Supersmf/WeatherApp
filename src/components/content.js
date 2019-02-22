@@ -40,14 +40,9 @@ export default class Content {
     panelStorageCity.render();
     panelCityChart.render();
 
-    // this.props.drawLocalWeatherPanel(this.root.querySelector('.localWeather'));
-    // this.props.drawStorageWeatherPanel(this.root.querySelector('.locationStory'));
-    // this.addEventListener();
   }
 
   addEventListener() {
     const element = this.root.querySelector('.groupWeatherView');
-    // console.log(element);
-    // document.addEventListener('changeUnit', () => console.log('changeUnit'));
   }
 }

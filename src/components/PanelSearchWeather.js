@@ -33,6 +33,7 @@ export default class PanelSearchWeather {
 
     render() {
       const city = document.querySelector('.inputSearch').value;
+      const addToGroupBtn = document.querySelector('.addToGroupBtn').value;
       getSingleData(city, getMetric())
         .then((data) => {
           this.data = data;

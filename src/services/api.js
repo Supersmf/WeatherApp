@@ -1,4 +1,4 @@
-import { URL_API, APPID } from '../config/constants';
+import { URL_API, APPID, CITY_API } from '../config/constants';
 
 const unitType = unit => (unit ? 'metric' : 'imperial');
 const requestEnd = unit => `&APPID=${APPID}&units=${unitType(unitType(unit))}`;
@@ -6,8 +6,14 @@ const requestEnd = unit => `&APPID=${APPID}&units=${unitType(unitType(unit))}`;
 // get single weather by city name
 const getSingleData = (city, unit) => (
   fetch(`${URL_API}weather?q=${city + requestEnd(unit)}`)
-    .then(response => response.json())
-    .catch(err => console.log('err ', err))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      console.log('there is no such city');
+    })
+    // .then(response => response.json(), () => console.log('err'))
+    // .catch(err => console.log('err ', err))
 );
 
 // get group weather by cities id
@@ -39,9 +45,16 @@ const getLocalWeather = unit => (
     .catch(err => console.log('err ', err))
 );
 
+const getCityDB = () => (
+  fetch(CITY_API)
+    .then(response => response.json())
+    .catch(err => console.log('err ', err))
+);
+
 export {
   getSingleData,
   getMultiData,
   getForecastData,
   getLocalWeather,
+  getCityDB,
 };

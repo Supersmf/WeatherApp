@@ -1,8 +1,18 @@
 let storage = JSON.parse(localStorage.getItem('city')) || [];
 
 const getLocalHistory = () => storage;
+
+const convertData = data => (
+  {
+    country: data.sys.country,
+    name: data.name,
+    id: data.id,
+  }
+);
+
 const setLocalHistory = (arr) => {
   localStorage.setItem('city', JSON.stringify(arr));
+  console.log(storage);
 };
 
 const removeFromLocalStorage = (item) => {
@@ -12,7 +22,8 @@ const removeFromLocalStorage = (item) => {
 
 const addToLocalStorage = (data) => {
   if (!storage.includes(data.id)) {
-    storage.push(data.id);
+    const item = convertData(data);
+    storage.push(item);
     localStorage.setItem('city', JSON.stringify(storage));
     return true;
   }

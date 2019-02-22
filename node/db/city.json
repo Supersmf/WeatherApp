@@ -1,0 +1,27 @@
+[
+  {
+    "country": "GB",
+    "name": "London",
+    "id": "2643743"
+  },
+  {
+    "country": "UA",
+    "name": "Kiev",
+    "id": "703448"
+  },
+  {
+    "country": "BY",
+    "name": "Minsk",
+    "id": "625144"
+  },
+  {
+    "country": "FR",
+    "name": "Paris",
+    "id": "2988507"
+  },
+  {
+    "country": "NO",
+    "name": "Oslo",
+    "id": "3143244"
+  }
+]
