@@ -1,6 +1,7 @@
 import { getLocalWeather, getCityDB } from '../services/api';
 import { getMetric, changeMetric } from '../services/props';
 import { buildElement } from '../services/dom';
+import { convertData } from '../services/storage';
 
 export default class PanelLocalWeather {
   constructor(root, props) {
@@ -9,35 +10,33 @@ export default class PanelLocalWeather {
     this.data = {};
   }
 
-  template = data => `
+  template = ({ name, country, temp, weather, pressure }) => `
         <div class="weatherPanel">
-          <h3>${data.name}, ${data.sys.country}</h3>
-          <p>Temperature: <span class="viewTemp">${data.main.temp} °${getMetric() ? 'C' : 'F'}</span></p>
-          <p>Weather: ${data.weather[0].description}</p>
-          <p>Pressure: ${data.main.pressure}</p>
-          <button class="addToGroupBtn">+</button>
+          <h3>${name}, ${country}</h3>
+          <p>Temperature: <span class="viewTemp">${temp} °${getMetric() ? 'C' : 'F'}</span></p>
+          <p>Weather: ${weather}</p>
+          <p>Pressure: ${pressure}</p>
         </div>
     `;
 
-  changeTemplate = ({ detail: data }) => {
-    let { temp } = this.data.main;
-    changeMetric();
+  changeTemplate = ({ detail: funcs }) => {
+    let { temp } = this.data;
     if (getMetric()) {
-      temp = data.calcF(temp);
+      temp = funcs.calcF(temp);
     } else {
-      temp = data.calcC(temp);
+      temp = funcs.calcC(temp);
     }
-    this.data.main.temp = temp;
+    this.data.temp = temp;
     this.root.innerHTML = this.template(this.data);
   }
 
   render() {
     getLocalWeather(getMetric()).then((data) => {
-      this.data = data;
-      buildElement(this.root, null, this.template(data));
+      this.data = convertData(data);
+      buildElement(this.root, null, this.template(this.data));
       document.addEventListener('changeUnit', this.changeTemplate);
-      const addToGroupBtn = this.root.querySelector('.addToGroupBtn');
-      addToGroupBtn.addEventListener('click', getCityDB);
+      // const addToGroupBtn = this.root.querySelector('.addToGroupBtn');
+      // addToGroupBtn.addEventListener('click', getCityDB);
     });
 
     // this.props.drawLocalWeatherPanel(this.root.querySelector('.localWeather'));

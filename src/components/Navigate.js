@@ -1,6 +1,6 @@
 import { buildElement } from '../services/dom';
 import PanelSearchWeather from './PanelSearchWeather';
-import { getMetric } from '../services/props';
+import { getMetric, changeMetric } from '../services/props';
 
 export default class Navigate {
   constructor(root, actions) {
@@ -37,6 +37,9 @@ export default class Navigate {
 
     inputSearch.addEventListener('change', search);
     btnTempr.addEventListener('click', () => { btnTempr.innerHTML = getMetric() ? '°C' : '°F'; });
-    btnTempr.addEventListener('click', () => document.dispatchEvent(new CustomEvent('changeUnit', { detail: { calcF, calcC } })));
+    btnTempr.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('changeUnit', { detail: { calcF, calcC } }));
+      setTimeout(changeMetric, 100);
+    })
   }
 }

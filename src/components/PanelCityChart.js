@@ -1,3 +1,6 @@
+import Highcharts from 'highcharts';
+import Exporting from 'highcharts/modules/exporting';
+
 import Chart from 'chart.js';
 
 export default class PanelCityChart {
@@ -5,16 +8,6 @@ export default class PanelCityChart {
     this.root = root;
     this.props = props;
   }
-
-  template = data => `
-        <div class="weatherPanel">
-          <h3>${data.name}, ${data.sys.country}</h3>
-          <p>Temperature: <span class="viewTemp">${data.main.temp} °C</span></p>
-          <p>Weather: ${data.weather[0].description}</p>
-          <p>Pressure: ${data.main.pressure}</p>
-          <button class="addToGroupBtn">+</button>
-        </div>
-    `;
 
   static fillData({ list }) {
     const res = {
@@ -39,37 +32,72 @@ export default class PanelCityChart {
   }
 
   static add({ detail: data }, root) {
-    const info = PanelCityChart.fillData(data);
-    const myChart = new Chart(root, {
-      type: 'bar',
-      data: {
-        labels: info.time,
-        datasets: [{
-          label: 'min temp',
-          backgroundColor: '#8e5ea2',
-          data: info.tempMin,
-        }, {
-          label: 'max temp',
-          backgroundColor: '#3e95cd',
-          data: info.tempMax,
-        }, {
-          label: 'wind speed',
-          type: 'line',
-          backgroundColor: '#3ecdba',
-          borderColor: '#3ecdba',
-          data: info.wind,
-          fill: false,
-        }],
+    console.log(root);
+    
+
+    Highcharts.chart(root, {
+
+      title: {
+        text: 'Solar Employment Growth by Sector, 2010-2016'
       },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-            },
-          }],
-        },
+    
+      subtitle: {
+        text: 'Source: thesolarfoundation.com'
       },
+    
+      yAxis: {
+        title: {
+          text: 'Number of Employees'
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+      },
+    
+      plotOptions: {
+        series: {
+          label: {
+            connectorAllowed: false
+          },
+          pointStart: 2010
+        }
+      },
+    
+      series: [{
+        name: 'Installation',
+        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+      }, {
+        name: 'Manufacturing',
+        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+      }, {
+        name: 'Sales & Distribution',
+        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+      }, {
+        name: 'Project Development',
+        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+      }, {
+        name: 'Other',
+        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+      }],
+    
+      responsive: {
+        rules: [{
+          condition: {
+            maxWidth: 500
+          },
+          chartOptions: {
+            legend: {
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom'
+            }
+          }
+        }]
+      }
+    
     });
+    Exporting(Highcharts);
   }
 }

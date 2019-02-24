@@ -1,29 +1,33 @@
-let storage = JSON.parse(localStorage.getItem('city')) || [];
+// let storage = JSON.parse(localStorage.getItem('city')) || [];
 
-const getLocalHistory = () => storage;
+const getLocalHistory = () => JSON.parse(localStorage.getItem('city')) || [];
 
 const convertData = data => (
   {
     country: data.sys.country,
     name: data.name,
     id: data.id,
+    temp: data.main.temp,
+    weather: data.weather[0].description,
+    pressure: data.main.pressure,
   }
 );
 
 const setLocalHistory = (arr) => {
   localStorage.setItem('city', JSON.stringify(arr));
-  console.log(storage);
+  // console.log(storage);
 };
 
-const removeFromLocalStorage = (item) => {
-  storage = storage.filter(el => el !== item);
-  setLocalHistory(storage);
-};
+// const removeFromLocalStorage = (item) => {
+//   storage = storage.filter(el => el !== item);
+//   setLocalHistory(storage);
+// };
 
 const addToLocalStorage = (data) => {
-  if (!storage.includes(data.id)) {
-    const item = convertData(data);
-    storage.push(item);
+  const storage = getLocalHistory();
+  const strJSONid = storage.reduce((id, item) => `${id},${item.id}`, '');
+  if (!strJSONid.includes(data.id)) {
+    storage.push(data);
     localStorage.setItem('city', JSON.stringify(storage));
     return true;
   }
@@ -33,5 +37,6 @@ const addToLocalStorage = (data) => {
 export {
   getLocalHistory,
   addToLocalStorage,
-  removeFromLocalStorage,
+  // removeFromLocalStorage,
+  convertData,
 };

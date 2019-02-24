@@ -7,30 +7,24 @@ export default class PanelStorageCity {
     this.props = props;
   }
 
-  template = data => `
-        <p>${data.name}, ${data.sys.country}  <span class="viewTemp">${data.main.temp} °${getMetric() ? 'C' : 'F'}</span></p>
+  template = ({ name, country, temp }, unit) => `
+        <p>${name}, ${country}  <span class="viewTemp">${temp} °${unit}</span></p>
     `;
 
-    changeTemplate = ({ detail: data }) => {
-      const children = Array.from(this.root.children);
-      console.log(children[0]);
-      children.forEach((chld) => {
-        console.log(chld);
-        const temp = chld.querySelector('.viewTemp');
-        console.log(temp);
-      });
-      // let { temp } = this.data.main;
-      // if (getMetric()) {
-      //   temp = data.calcF(temp);
-      // } else {
-      //   temp = data.calcC(temp);
-      // }
-      // this.data.main.temp = temp;
-      // this.root.innerHTML = this.template(this.data);
+    changeTemplate = ({ detail: funcs }, element) => {
+      let { temp } = this.data;
+      if (getMetric()) {
+        temp = funcs.calcF(temp);
+      } else {
+        temp = funcs.calcC(temp);
+      }
+      this.data.temp = temp;
+      element.innerHTML = this.template(this.data, getMetric() ? 'C' : 'F');
     }
 
     render(data) {
-      buildElement('div', this.root, this.template(data), 'storageWeatherPanel');
-      document.addEventListener('changeUnit', this.changeTemplate);
+      this.data = data;
+      const element = buildElement('div', this.root, this.template(this.data, getMetric() ? 'C' : 'F'), 'storageWeatherPanel');
+      document.addEventListener('changeUnit', fnc => this.changeTemplate(fnc, element));
     }
 }
