@@ -3,6 +3,7 @@ import PanelLocalWeather from './PanelLocalWeather';
 import PanelStorageCity from './PanelStorageCity';
 import PanelCityChart from './PanelCityChart';
 import PanelCitiesGroup from './PanelCitiesGroup';
+import PanelCitiesCharts from './PanelCitiesCharts';
 
 export default class Content {
   constructor(root, props) {
@@ -22,30 +23,32 @@ export default class Content {
         <section class="groupWeatherView">
           <article class="groupWeatherContainer"></article>
           <article class="groupChartContainer">
-            <canvas id="groupWeatherChart" class="groupWeatherChart"></canvas>
-            <canvas id="groupWeatherMap" class="groupWeatherMap"></canvas>
+            <div id="groupWeatherChart" class="groupWeatherChart"></div>
+            <div id="groupWeatherMap" class="groupWeatherMap"></div>
           </article>
         </section>
     `;
 
   render() {
     const main = buildElement('main', this.root, this.template(), 'content');
-    
+
     const localWeather = main.querySelector('.localWeather');
     const locationStorage = main.querySelector('.locationStory');
     const cityChart = main.querySelector('.cityChart');
     const groupWeatherContainer = main.querySelector('.groupWeatherContainer');
+    const groupWeatherChart = main.querySelector('.groupWeatherChart');
 
     const panelLocalWeather = new PanelLocalWeather(localWeather);
     const panelStorageCity = new PanelStorageCity(locationStorage);
     const panelCityChart = new PanelCityChart(cityChart);
     const panelCitiesGroup = new PanelCitiesGroup(groupWeatherContainer);
+    const panelCitiesCharts = new PanelCitiesCharts(groupWeatherChart);
 
     panelLocalWeather.render();
     panelStorageCity.render();
     panelCityChart.render();
     panelCitiesGroup.render();
-
+    panelCitiesCharts.render();
   }
 
   addEventListener() {

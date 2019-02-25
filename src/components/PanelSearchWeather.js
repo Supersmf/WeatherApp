@@ -1,5 +1,5 @@
 import { getSingleData, getForecastData } from '../services/api';
-import { getMetric } from '../services/props';
+import { getMetric, calcC, calcF } from '../services/props';
 import { buildElement } from '../services/dom';
 import { addToLocalStorage, convertData } from '../services/storage';
 
@@ -10,41 +10,41 @@ export default class PanelSearchWeather {
     this.data = {};
   }
 
-  template = ({ name, country, temp, weather, pressure }) => `
+  template = ({ name, country, temp, weather, pressure }, unit) => `
         <div class="weatherPanel">
           <h3>${name}, ${country}</h3>
-          <p>Temperature: <span class="viewTemp">${temp} °${getMetric() ? 'C' : 'F'}</span></p>
+          <p>Temperature: <span class="viewTemp">${temp} ${unit}</span></p>
           <p>Weather: ${weather}</p>
           <p>Pressure: ${pressure}</p>
           <button class="addToGroupBtn">+</button>
         </div>
     `;
 
-    changeTemplate = ({ detail: funcs }) => {
+    changeTemplate = ({ detail: unit }) => {
       let { temp } = this.data;
       if (getMetric()) {
-        temp = funcs.calcF(temp);
+        temp = calcF(temp);
       } else {
-        temp = funcs.calcC(temp);
+        temp = calcC(temp);
       }
       this.data.temp = temp;
-      this.root.innerHTML = this.template(this.data);
+      this.root.innerHTML = this.template(this.data, unit);
     }
 
     render() {
       const city = document.querySelector('.inputSearch').value;
       const addToGroupBtn = document.querySelector('.addToGroupBtn');
-      
+
       const addToLocal = () => {
         if (addToLocalStorage(this.data)) {
-          document.dispatchEvent(new CustomEvent('addToLocal', this.data));
+          document.dispatchEvent(new CustomEvent('addToLocal', { detail: this.data }));
         }
-      }
+      };
 
       getSingleData(city, getMetric())
         .then((data) => {
           this.data = convertData(data);
-          buildElement(this.root, null, this.template(this.data), null, null, addToLocal);
+          buildElement(this.root, null, this.template(this.data, getMetric() ? '°C' : '°F'), null, null, addToLocal);
 
           getForecastData(city)
             .then(res => document.dispatchEvent(new CustomEvent('drawChart', { detail: res })));

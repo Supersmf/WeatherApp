@@ -13,12 +13,19 @@ const getSingleData = (city, unit) => (
       console.log('there is no such city');
     })
     // .then(response => response.json(), () => console.log('err'))
-    // .catch(err => console.log('err ', err))
+    .catch(err => console.log('err ', err))
 );
 
 // get group weather by cities id
-const getMultiData = (citysId, unit) => (
-  fetch(`${URL_API}group?id=${citysId + requestEnd(unit)}`)
+const getMultiData = (citiesId, unit) => (
+  fetch(`${URL_API}group?id=${citiesId + requestEnd(unit)}`)
+    .then(response => response.json())
+    .catch(err => console.log('err ', err))
+);
+
+// get group weather id for 16 days
+const getForecastData16 = (cityId, unit) => (
+  fetch(`${URL_API}forecast/daily?id=${cityId + requestEnd(unit)}`)
     .then(response => response.json())
     .catch(err => console.log('err ', err))
 );
@@ -55,6 +62,7 @@ export {
   getSingleData,
   getMultiData,
   getForecastData,
+  getForecastData16,
   getLocalWeather,
   getCityDB,
 };

@@ -13,16 +13,6 @@ const convertData = data => (
   }
 );
 
-const setLocalHistory = (arr) => {
-  localStorage.setItem('city', JSON.stringify(arr));
-  // console.log(storage);
-};
-
-// const removeFromLocalStorage = (item) => {
-//   storage = storage.filter(el => el !== item);
-//   setLocalHistory(storage);
-// };
-
 const addToLocalStorage = (data) => {
   const storage = getLocalHistory();
   const strJSONid = storage.reduce((id, item) => `${id},${item.id}`, '');

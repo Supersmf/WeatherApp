@@ -23,23 +23,27 @@ export default class Navigate {
 
   addEventsListener() {
     const inputSearch = this.root.querySelector('.inputSearch');
+    const btnSearch = this.root.querySelector('.btnSearch');
     const btnTempr = this.root.querySelector('.btnUnit');
 
-    const search = () => {
+    const search = (e) => {
       const currentWeather = document.querySelector('.currentWeather');
       const panelSearchWeather = new PanelSearchWeather(currentWeather);
 
       panelSearchWeather.render();
+      e.target.value = '';
     };
 
-    const calcF = celsius => Math.round((celsius * 9) / 5 + 32).toFixed(0);
-    const calcC = fahrenheit => (((fahrenheit - 32) * 5) / 9).toFixed(2);
-
-    inputSearch.addEventListener('change', search);
+    btnSearch.addEventListener('click', search);
+    inputSearch.addEventListener('keypress', (e) => {
+      if (e.keyCode === 13) {
+        search(e);
+      }
+    });
     btnTempr.addEventListener('click', () => { btnTempr.innerHTML = getMetric() ? '°C' : '°F'; });
     btnTempr.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('changeUnit', { detail: { calcF, calcC } }));
-      setTimeout(changeMetric, 100);
-    })
+      document.dispatchEvent(new CustomEvent('changeUnit', { detail: !getMetric() ? '°C' : '°F' }));
+      changeMetric();
+    });
   }
 }

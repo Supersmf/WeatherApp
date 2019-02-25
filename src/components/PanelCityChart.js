@@ -1,12 +1,11 @@
 import Highcharts from 'highcharts';
-import Exporting from 'highcharts/modules/exporting';
-
-import Chart from 'chart.js';
+import { getMetric, calcC, calcF } from '../services/props';
 
 export default class PanelCityChart {
   constructor(root, props) {
     this.root = root;
     this.props = props;
+    this.city = '';
   }
 
   static fillData({ list }) {
@@ -28,76 +27,100 @@ export default class PanelCityChart {
   }
 
   render() {
-    document.addEventListener('drawChart', data => PanelCityChart.add(data, this.root));
+    document.addEventListener('drawChart', ({ detail }) => {
+      this.city = detail.city;
+      this.data = PanelCityChart.fillData(detail);
+      this.add(getMetric() ? '°C' : '°F');
+    });
+    document.addEventListener('changeUnit', ({ detail: unit }) => {
+      if (this.data) {
+        this.data.tempMin = this.data.tempMin.map(item => (getMetric() ? +calcF(item) : +calcC(item)));
+        this.data.tempMax = this.data.tempMax.map(item => (getMetric() ? +calcF(item) : +calcC(item)));
+        this.add(unit);
+      }
+    });
   }
 
-  static add({ detail: data }, root) {
-    console.log(root);
-    
-
-    Highcharts.chart(root, {
-
+  add(unit) {
+    Highcharts.chart(this.root, {
+      chart: {
+        zoomType: 'xy',
+      },
       title: {
-        text: 'Solar Employment Growth by Sector, 2010-2016'
+        text: `Average Weather Data for ${this.city}`,
       },
-    
-      subtitle: {
-        text: 'Source: thesolarfoundation.com'
-      },
-    
-      yAxis: {
+      xAxis: [{
+        categories: this.data.time,
+        crosshair: true,
+      }],
+      yAxis: [{ // Primary yAxis
+        labels: {
+          format: `{value} ${unit}`,
+          style: {
+            color: Highcharts.getOptions().colors[0],
+          },
+        },
         title: {
-          text: 'Number of Employees'
-        }
+          text: 'Temperature',
+          style: {
+            color: Highcharts.getOptions().colors[0],
+          },
+        },
+        opposite: true,
+
+      }, { // Secondary yAxis
+        gridLineWidth: 0,
+        title: {
+          text: 'Wind',
+          style: {
+            color: Highcharts.getOptions().colors[2],
+          },
+        },
+        labels: {
+          format: '{value} m/s',
+          style: {
+            color: Highcharts.getOptions().colors[2],
+          },
+        },
+
+      }],
+      tooltip: {
+        shared: true,
       },
       legend: {
         layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
+        align: 'left',
+        x: 80,
+        verticalAlign: 'top',
+        y: 15,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'rgba(255,255,255,0.25)',
       },
-    
-      plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false
-          },
-          pointStart: 2010
-        }
-      },
-    
       series: [{
-        name: 'Installation',
-        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+        name: 'min temperature',
+        type: 'column',
+        data: this.data.tempMin,
+        tooltip: {
+          valueSuffix: ` ${unit}`,
+        },
+      },
+      {
+        name: 'max temperature',
+        type: 'column',
+        data: this.data.tempMax,
+        tooltip: {
+          valueSuffix: ` ${unit}`,
+        },
       }, {
-        name: 'Manufacturing',
-        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-      }, {
-        name: 'Sales & Distribution',
-        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-      }, {
-        name: 'Project Development',
-        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-      }, {
-        name: 'Other',
-        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+        name: 'wind',
+        type: 'spline',
+        yAxis: 1,
+        data: this.data.wind,
+        tooltip: {
+          valueSuffix: ' m/s',
+        },
+
       }],
-    
-      responsive: {
-        rules: [{
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: 'horizontal',
-              align: 'center',
-              verticalAlign: 'bottom'
-            }
-          }
-        }]
-      }
-    
     });
-    Exporting(Highcharts);
   }
 }

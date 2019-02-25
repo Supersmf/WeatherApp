@@ -1,8 +1,8 @@
 import { getMetric } from '../services/props';
 import { buildElement } from '../services/dom';
-import { getMultiData, getCityDB } from '../services/api';
+import { getMultiData, getForecastData, getForecastData16 } from '../services/api';
 import { getLocalHistory, convertData } from '../services/storage';
-import PanelCitySmall from '../components/PanelCitySmall';
+import PanelCitiesGroupSmall from './PanelCitiesGroup_small';
 
 export default class PanelCitiesGroup {
   constructor(root, props) {
@@ -10,23 +10,34 @@ export default class PanelCitiesGroup {
     this.props = props;
   }
 
-  template = ({ name, country, temp, weather, pressure }, unit) => `
-      <p>${name}, ${country}  <span class="viewTemp">${temp} °${unit}</span></p>
+  template = ({ name, country, temp }, unit) => `
+      <div class="storageWeatherPanel">
+        <p>${name}, ${country}  <span class="viewTemp">${temp} °${unit}</span></p>
+      </div>
     `;
-  
-    render() {
-      // document.addEventListener('addToLocal', this.add);
-      const stoage = getLocalHistory();
-      stoage.forEach(item => buildElement('div', this.root, this.template(item, getMetric() ? 'C' : 'F')));
-      document.addEventListener('addToLocal', this.update);
-    }
 
+  render() {
+    const storage = getLocalHistory();
+    let strJSONid = storage.reduce((id, item) => `${id},${item.id}`, '');
+    strJSONid = strJSONid.slice(1);
 
-    update = () => {
-      const stoage = getLocalHistory();
-      this.root.innerHTML = '';
-      stoage.forEach(item => buildElement('div', this.root, this.template(item, getMetric())));
-    // const panelCitySmall = new PanelCitySmall(this.root);
-    // panelCitySmall.render(data);
+    document.addEventListener('addToLocal', ({ detail }) => this.add(detail));
+
+    if (storage[0]) {
+      getMultiData(`${strJSONid}`, getMetric())
+        .then(items => items.list.forEach((item) => {
+          const convItem = convertData(item);
+          buildElement('div', this.root, this.add(convItem));
+        }));
+      storage.forEach(city => getForecastData(city.name, getMetric()).then((data) => {
+        document.dispatchEvent(new CustomEvent('drawGroupCharts', { detail: data }));
+      }));
+      // storage.forEach(city => getForecastData16(city.id, getMetric()).then(data => console.log(data)));
     }
+  }
+
+  add = (data) => {
+    const panelCitiesGroupSmall = new PanelCitiesGroupSmall(this.root);
+    panelCitiesGroupSmall.render(data);
+  }
 }

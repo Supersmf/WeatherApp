@@ -138,9 +138,13 @@ section {
 }
 .groupWeatherContainer {
   flex: 1;
+  padding: 10px;
 }
 .groupChartContainer {
-  flex: 1;
+  flex: 5;
+}
+.groupWeatherChart {
+  padding: 10px;
 }
 .addToGroupBtn {
   position: absolute;
@@ -157,4 +161,8 @@ section {
 }
 .addToGroupBtn:active {
   transform: scale(0.9);
+}
+.cityChart {
+  height: 100%;
+  width: 100%;
 }
