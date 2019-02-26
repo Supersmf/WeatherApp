@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 const getCities = require('./controllers/cities');
 
 const app = express();
@@ -18,6 +17,7 @@ app.use((req, res, next) => {
     return res.status(200).json({});
   }
   next();
+  return null;
 });
 
 app.get('/', (req, res, next) => {

@@ -1,4 +1,4 @@
-import { getMetric, calcC, calcF } from '../services/props';
+import { getUnit, changeTemperature } from '../services/props';
 import { buildElement } from '../services/dom';
 
 export default class PanelStorageCity {
@@ -12,19 +12,17 @@ export default class PanelStorageCity {
     `;
 
     changeTemplate = ({ detail: unit }) => {
-      let { temp } = this.data;
-      if (getMetric()) {
-        temp = calcF(temp);
-      } else {
-        temp = calcC(temp);
-      }
-      this.data.temp = temp;
+      this.data.temp = changeTemperature(this.data.temp);
       this.element.innerHTML = this.template(this.data, unit);
     }
 
     render(data) {
       this.data = data;
-      this.element = buildElement('div', this.root, this.template(this.data, getMetric() ? '°C' : '°F'), 'storageWeatherPanel');
+      this.element = buildElement('div', this.root, this.template(this.data, getUnit()), 'storageWeatherPanel');
+      this.addEventsListener();
+    }
+
+    addEventsListener() {
       document.addEventListener('changeUnit', fnc => this.changeTemplate(fnc));
     }
 }

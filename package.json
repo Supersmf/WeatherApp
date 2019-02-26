@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint",
+    "lint": "eslint \"**/*.{js,jsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "dev": "webpack-dev-server --inline --hot",
@@ -43,6 +43,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "chart.js": "^2.7.3",
     "express": "^4.16.4",
-    "highcharts": "^7.0.3"
+    "highcharts": "^7.0.3",
+    "moment": "^2.24.0"
   }
 }

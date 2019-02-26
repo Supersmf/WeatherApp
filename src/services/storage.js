@@ -1,20 +1,9 @@
 const getLocalHistory = () => JSON.parse(localStorage.getItem('city')) || [];
 
-const convertData = data => (
-  {
-    country: data.sys.country,
-    name: data.name,
-    id: data.id,
-    temp: data.main.temp,
-    weather: data.weather[0].description,
-    pressure: data.main.pressure,
-  }
-);
-
 const addToLocalStorage = (data) => {
   const storage = getLocalHistory();
-  const strJSONid = storage.reduce((id, item) => `${id},${item.id}`, '');
-  if (!strJSONid.includes(data.id)) {
+  const include = getLocalHistory().find(({ id }) => id === data.id);
+  if (!include) {
     storage.push(data);
     localStorage.setItem('city', JSON.stringify(storage));
     return true;
@@ -25,5 +14,4 @@ const addToLocalStorage = (data) => {
 export {
   getLocalHistory,
   addToLocalStorage,
-  convertData,
 };

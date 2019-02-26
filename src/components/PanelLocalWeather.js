@@ -1,7 +1,6 @@
-import { getLocalWeather } from '../services/api';
-import { getMetric, calcC, calcF } from '../services/props';
+import { changeTemperature, getUnit } from '../services/props';
 import { buildElement } from '../services/dom';
-import { convertData } from '../services/storage';
+import { getLocalData } from '../actions/renderData';
 
 export default class PanelLocalWeather {
   constructor(root, props) {
@@ -10,7 +9,9 @@ export default class PanelLocalWeather {
     this.data = {};
   }
 
-  template = ({ name, country, temp, weather, pressure }, unit) => `
+  template = ({
+    name, country, temp, weather, pressure,
+  }, unit) => `
         <div class="weatherPanel">
           <h3>${name}, ${country}</h3>
           <p>Temperature: <span class="viewTemp">${temp} ${unit}</span></p>
@@ -19,22 +20,18 @@ export default class PanelLocalWeather {
         </div>
     `;
 
-  changeTemplate = ({ detail: unit }) => {
-    let { temp } = this.data;
-    if (getMetric()) {
-      temp = calcF(temp);
-    } else {
-      temp = calcC(temp);
+    changeTemplate = ({ detail: unit }) => {
+      this.data.temp = changeTemperature(this.data.temp);
+      this.root.innerHTML = this.template(this.data, unit);
     }
-    this.data.temp = temp;
-    this.root.innerHTML = this.template(this.data, unit);
-  }
 
-  render() {
-    getLocalWeather(getMetric()).then((data) => {
-      this.data = convertData(data);
-      buildElement(this.root, null, this.template(this.data, getMetric() ? '°C' : '°F'));
-      document.addEventListener('changeUnit', this.changeTemplate);
-    });
-  }
+    render() {
+      const renderTemplate = (data) => {
+        this.data = data;
+        buildElement(this.root, null, this.template(this.data, getUnit()));
+        document.addEventListener('changeUnit', this.changeTemplate);
+      };
+
+      getLocalData(renderTemplate);
+    }
 }

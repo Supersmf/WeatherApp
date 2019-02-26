@@ -1,5 +1,5 @@
 import Highcharts from 'highcharts';
-import { getMetric, calcC, calcF } from '../services/props';
+import { getUnit, changeTemperature } from '../services/props';
 
 export default class PanelCityChart {
   constructor(root, props) {
@@ -29,13 +29,12 @@ export default class PanelCityChart {
     document.addEventListener('drawChart', ({ detail }) => {
       this.city = detail.city;
       this.data = PanelCityChart.fillData(detail);
-      this.add(getMetric() ? '°C' : '°F');
+      this.add(getUnit());
     });
     document.addEventListener('changeUnit', ({ detail: unit }) => {
-      const fnc = getMetric() ? calcF : calcC;
       if (this.data) {
-        this.data.tempMin = this.data.tempMin.map(item => +fnc(item));
-        this.data.tempMax = this.data.tempMax.map(item => +fnc(item));
+        this.data.tempMin = this.data.tempMin.map(item => changeTemperature(item));
+        this.data.tempMax = this.data.tempMax.map(item => changeTemperature(item));
         this.add(unit);
       }
     });

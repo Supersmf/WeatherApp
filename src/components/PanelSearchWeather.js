@@ -1,16 +1,17 @@
-import { getSingleData, getForecastData } from '../services/api';
-import { getMetric, calcC, calcF } from '../services/props';
+import { changeTemperature, getUnit } from '../services/props';
 import { buildElement } from '../services/dom';
-import { addToLocalStorage, convertData } from '../services/storage';
+import { addToLocalStorage } from '../services/storage';
+import { getSearchCity, getChartData } from '../actions/renderData';
 
 export default class PanelSearchWeather {
   constructor(root, props) {
     this.root = root;
     this.props = props;
-    this.data = {};
   }
 
-  template = ({ name, country, temp, weather, pressure }, unit) => `
+  template = ({
+    name, country, temp, weather, pressure,
+  }, unit) => `
         <div class="weatherPanel">
           <h3>${name}, ${country}</h3>
           <p>Temperature: <span class="viewTemp">${temp} ${unit}</span></p>
@@ -21,13 +22,7 @@ export default class PanelSearchWeather {
     `;
 
     changeTemplate = ({ detail: unit }) => {
-      let { temp } = this.data;
-      if (getMetric()) {
-        temp = calcF(temp);
-      } else {
-        temp = calcC(temp);
-      }
-      this.data.temp = temp;
+      this.data.temp = changeTemperature(this.data.temp);
       this.root.innerHTML = this.template(this.data, unit);
     }
 
@@ -38,17 +33,19 @@ export default class PanelSearchWeather {
           document.dispatchEvent(new CustomEvent('addToLocal', { detail: this.data }));
         }
       };
+      const renderTemplate = (data) => {
+        this.data = data;
+        buildElement(this.root, null, this.template(this.data, getUnit()), null, null, addToLocal);
+      };
+      const renderChart = data => document.dispatchEvent(new CustomEvent('drawChart', { detail: data }));
 
-      getSingleData(city, getMetric())
-        .then((data) => {
-          this.data = convertData(data);
-          buildElement(this.root, null, this.template(this.data, getMetric() ? '°C' : '°F'), null, null, addToLocal);
+      getSearchCity(city, renderTemplate);
+      getChartData(city, renderChart);
 
-          getForecastData(city)
-            .then(res => document.dispatchEvent(new CustomEvent('drawChart', { detail: res })));
-        })
-        .catch(() => console.log('city is not defined'));
+      this.addEventsListener();
+    }
 
+    addEventsListener() {
       document.addEventListener('changeUnit', this.changeTemplate);
     }
 }
