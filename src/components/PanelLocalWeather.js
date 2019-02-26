@@ -1,4 +1,4 @@
-import { getLocalWeather, getCityDB } from '../services/api';
+import { getLocalWeather } from '../services/api';
 import { getMetric, calcC, calcF } from '../services/props';
 import { buildElement } from '../services/dom';
 import { convertData } from '../services/storage';
@@ -35,12 +35,6 @@ export default class PanelLocalWeather {
       this.data = convertData(data);
       buildElement(this.root, null, this.template(this.data, getMetric() ? '°C' : '°F'));
       document.addEventListener('changeUnit', this.changeTemplate);
-      // const addToGroupBtn = this.root.querySelector('.addToGroupBtn');
-      // addToGroupBtn.addEventListener('click', getCityDB);
     });
-
-    // this.props.drawLocalWeatherPanel(this.root.querySelector('.localWeather'));
-    // this.props.drawStorageWeatherPanel(this.root.querySelector('.locationStory'));
-    // this.addEventListener();
   }
 }

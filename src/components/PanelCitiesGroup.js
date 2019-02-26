@@ -1,8 +1,8 @@
 import { getMetric } from '../services/props';
 import { buildElement } from '../services/dom';
-import { getMultiData, getForecastData, getForecastData16 } from '../services/api';
+import { getMultiData, getForecastData } from '../services/api';
 import { getLocalHistory, convertData } from '../services/storage';
-import PanelCitiesGroupSmall from './PanelCitiesGroup_small';
+import PanelCitiesGroupSmall from './PanelCitiesGroupSmall';
 
 export default class PanelCitiesGroup {
   constructor(root, props) {
@@ -26,13 +26,11 @@ export default class PanelCitiesGroup {
     if (storage[0]) {
       getMultiData(`${strJSONid}`, getMetric())
         .then(items => items.list.forEach((item) => {
-          const convItem = convertData(item);
-          buildElement('div', this.root, this.add(convItem));
+          buildElement('div', this.root, this.add(convertData(item)));
         }));
       storage.forEach(city => getForecastData(city.name, getMetric()).then((data) => {
         document.dispatchEvent(new CustomEvent('drawGroupCharts', { detail: data }));
       }));
-      // storage.forEach(city => getForecastData16(city.id, getMetric()).then(data => console.log(data)));
     }
   }
 

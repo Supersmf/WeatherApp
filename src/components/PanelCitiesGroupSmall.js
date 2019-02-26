@@ -1,4 +1,4 @@
-import { getMetric, calcF, calcC } from '../services/props';
+import { getMetric, calcC, calcF } from '../services/props';
 import { buildElement } from '../services/dom';
 
 export default class PanelStorageCity {

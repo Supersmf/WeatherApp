@@ -1,5 +1,3 @@
-// let storage = JSON.parse(localStorage.getItem('city')) || [];
-
 const getLocalHistory = () => JSON.parse(localStorage.getItem('city')) || [];
 
 const convertData = data => (
@@ -27,6 +25,5 @@ const addToLocalStorage = (data) => {
 export {
   getLocalHistory,
   addToLocalStorage,
-  // removeFromLocalStorage,
   convertData,
 };

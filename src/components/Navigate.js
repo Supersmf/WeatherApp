@@ -8,16 +8,16 @@ export default class Navigate {
     this.acts = actions;
   }
 
-  template = () => `
+  template = unit => `
   <div class="searchForm">
     <input class="inputSearch">
     <button class="btnSearch">Search</button>
-    <button class="btnUnit">°${!getMetric() ? 'C' : 'F'}</button>
+    <button class="btnUnit">°${unit}</button>
   </div>
 `;
 
   render() {
-    buildElement('nav', this.root, this.template(), 'searchForm');
+    buildElement('nav', this.root, this.template(!getMetric() ? 'C' : 'F'), 'searchForm');
     this.addEventsListener();
   }
 

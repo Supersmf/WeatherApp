@@ -13,10 +13,9 @@ export default class PanelCitiesCharts {
   fillData({ city, list }) {
     const times = [];
     const temp = [];
-      
-    // list.splice(0, 20);
+
     list.forEach((item) => {
-      const time = item.dt_txt.split(' ')[1].slice(0, -3);
+      const time = item.dt_txt.slice(5, -3).replace('-', '.');
       times.push(time);
       temp.push(item.main.temp);
     });
@@ -34,7 +33,6 @@ export default class PanelCitiesCharts {
         this.fillData(data);
         this.add(getMetric() ? '°C' : '°F');
       });
-      
     });
     document.addEventListener('changeUnit', ({ detail: unit }) => {
       const fnc = getMetric() ? calcF : calcC;
@@ -57,21 +55,23 @@ export default class PanelCitiesCharts {
       subtitle: {
         text: 'Source: WorldClimate.com',
       },
-      xAxis: [{
+      xAxis: {
         categories: this.time,
-      }, {
-        linkedTo: 0,
-        tickPositions: [1.5, 9.5, 17.5, 25.5, 33.5],
         labels: {
-          format: '{value:<span style="font-size: 12px; font-weight: bold">%a</span> %b %e}',
+          formatter() {
+            const temp = this.value.split(' ');
+            return `<p style="font-size: 9px;">
+                      ${temp[1]}<br>
+                      <span style="font-size: 9px; font-weight: bold">
+                        ${temp[0]}
+                      </span>
+                    </p>`;
+          },
           align: 'right',
-          x: -15,
-          // y: -5,
+          x: -5,
+          rotation: 0,
         },
-        // opposite: true,
-        tickLength: 20,
-        gridLineWidth: 1,
-      }],
+      },
       yAxis: {
         title: {
           text: `Temperature (${unit})`,

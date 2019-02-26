@@ -50,8 +50,4 @@ export default class Content {
     panelCitiesGroup.render();
     panelCitiesCharts.render();
   }
-
-  addEventListener() {
-    const element = this.root.querySelector('.groupWeatherView');
-  }
 }

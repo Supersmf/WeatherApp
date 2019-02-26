@@ -19,7 +19,6 @@ export default class PanelStorageCity {
     });
   }
 
-
     add = (data) => {
       const panelCitySmall = new PanelCitySmall(this.root);
       panelCitySmall.render(data);

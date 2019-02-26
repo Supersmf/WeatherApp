@@ -10,10 +10,9 @@ const getSingleData = (city, unit) => (
       if (response.status === 200) {
         return response.json();
       }
-      console.log('there is no such city');
+      throw new Error('There is no such city');
     })
-    // .then(response => response.json(), () => console.log('err'))
-    .catch(err => console.log('err ', err))
+    .catch(err => console.log(err))
 );
 
 // get group weather by cities id

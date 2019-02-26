@@ -17,8 +17,7 @@ export default class PanelCityChart {
     };
     list.splice(10);
     list.forEach((el) => {
-      const time = el.dt_txt.split(' ')[1].slice(0, -3);
-      res.time.push(time);
+      res.time.push(el.dt_txt.split(' ')[1].slice(0, -3));
       res.tempMin.push(el.main.temp_min);
       res.tempMax.push(el.main.temp_max);
       res.wind.push(el.wind.speed);
@@ -33,9 +32,10 @@ export default class PanelCityChart {
       this.add(getMetric() ? '°C' : '°F');
     });
     document.addEventListener('changeUnit', ({ detail: unit }) => {
+      const fnc = getMetric() ? calcF : calcC;
       if (this.data) {
-        this.data.tempMin = this.data.tempMin.map(item => (getMetric() ? +calcF(item) : +calcC(item)));
-        this.data.tempMax = this.data.tempMax.map(item => (getMetric() ? +calcF(item) : +calcC(item)));
+        this.data.tempMin = this.data.tempMin.map(item => +fnc(item));
+        this.data.tempMax = this.data.tempMax.map(item => +fnc(item));
         this.add(unit);
       }
     });

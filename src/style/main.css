@@ -58,7 +58,7 @@ header {
   opacity: 0.5;
 }
 section {
-  border: 1px dotted;
+  /* border: 1px dotted; */
   min-height: 300px;
   display: flex;
 }
@@ -70,8 +70,8 @@ section {
   padding: 20px;
 }
 .currentWeather {
-  border-left: 1px dotted;
-  border-right: 1px dotted;
+  /* border-left: 1px dotted; */
+  /* border-right: 1px dotted; */
 }
 .currentWeatherChart {
   flex: 4;
@@ -81,7 +81,7 @@ section {
   box-sizing: border-box;
 }
 .locationStory {
-  border-left: 1px dotted;
+  /* border-left: 1px dotted; */
 }
 .weatherPanel {
   position: relative;

@@ -33,8 +33,6 @@ export default class PanelSearchWeather {
 
     render() {
       const city = document.querySelector('.inputSearch').value;
-      const addToGroupBtn = document.querySelector('.addToGroupBtn');
-
       const addToLocal = () => {
         if (addToLocalStorage(this.data)) {
           document.dispatchEvent(new CustomEvent('addToLocal', { detail: this.data }));
@@ -48,14 +46,8 @@ export default class PanelSearchWeather {
 
           getForecastData(city)
             .then(res => document.dispatchEvent(new CustomEvent('drawChart', { detail: res })));
-        });
-
-      // addToGroupBtn.addEventListener('click', () => {
-      //   console.log('click group btn');
-      //   // if (addToLocalStorage(this.data)) {
-      //   //   document.dispatchEvent(new CustomEvent('addToLocal', this.data));
-      //   // }
-      // })
+        })
+        .catch(() => console.log('city is not defined'));
 
       document.addEventListener('changeUnit', this.changeTemplate);
     }
