@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts';
-import moment from 'moment/src/moment';
-import { getMetric, calcC, calcF } from '../services/props';
+import * as moment from 'moment';
+import { getMetric, getUnit, changeTemperature } from '../services/props';
 import { getForecastData } from '../services/api';
 
 export default class PanelCitiesCharts {
@@ -16,9 +16,11 @@ export default class PanelCitiesCharts {
     const temp = [];
 
     list.forEach((item) => {
-      console.log(moment(item.dt));
-      const time = item.dt_txt.slice(5, -3).replace('-', '.');
-      times.push(time);
+      const t = moment.unix(item.dt);
+      const month = t.format('MMMM').slice(0, 3);
+      const day = t.format('D');
+      const hour = t.format('H');
+      times.push(`${day}${month}. ${hour}h`);
       temp.push(item.main.temp);
     });
     this.data.push({ name: city.name, data: temp });
@@ -28,18 +30,17 @@ export default class PanelCitiesCharts {
   render() {
     document.addEventListener('drawGroupCharts', ({ detail }) => {
       this.fillData(detail);
-      this.add(getMetric() ? '°C' : '°F');
+      this.add(getUnit());
     });
     document.addEventListener('addToLocal', ({ detail }) => {
       getForecastData(detail.name, getMetric()).then((data) => {
         this.fillData(data);
-        this.add(getMetric() ? '°C' : '°F');
+        this.add(getUnit());
       });
     });
     document.addEventListener('changeUnit', ({ detail: unit }) => {
-      const fnc = getMetric() ? calcF : calcC;
       this.data.forEach((item, index) => {
-        this.data[index].data = item.data.map(e => +fnc(e));
+        this.data[index].data = item.data.map(e => changeTemperature(e));
       });
       this.add(unit);
     });
@@ -67,12 +68,10 @@ export default class PanelCitiesCharts {
             return `<p style="font-size: 9px;">
                       ${temp[1]}<br>
                       <span style="font-size: 9px; font-weight: bold">
-                        ${temp[0]}
+                        ${temp[1] === '0h' ? temp[0] : ''}
                       </span>
                     </p>`;
           },
-          align: 'right',
-          x: -5,
           rotation: 0,
         },
       },

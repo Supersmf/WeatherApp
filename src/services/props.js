@@ -12,7 +12,7 @@ const changeMetric = () => {
 const calcF = celsius => Math.round((celsius * 9) / 5 + 32).toFixed(0);
 const calcC = fahrenheit => (((fahrenheit - 32) * 5) / 9).toFixed(2);
 
-const changeTemperature = temperature => (isMetric ? calcF(temperature) : calcC(temperature));
+const changeTemperature = temperature => +(isMetric ? calcF(temperature) : calcC(temperature));
 
 export {
   getMetric,

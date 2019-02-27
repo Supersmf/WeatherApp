@@ -5,11 +5,16 @@ import { getMetric } from '../services/props';
 import { getLocalHistory } from '../services/storage';
 import convertData from '../convert/convertData';
 
+// eslint-disable-next-line no-console
+const log = err => console.log(err);
+
 const getSearchCity = (city, fnc) => getSingleData(city, getMetric())
-  .then(data => fnc(convertData(data)));
+  .then(data => fnc(convertData(data)))
+  .catch(err => log(err));
 
 const getChartData = (city, fnc) => getForecastData(city, getMetric())
-  .then(data => fnc(data));
+  .then((data) => { if (data) fnc(data); })
+  .catch(err => log(err));
 
 const getLocalData = fnc => getLocalWeather(getMetric())
   .then(data => fnc(convertData(data)));

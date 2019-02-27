@@ -35,8 +35,14 @@ const getForecastData16 = (cityId, unit) => (
 // get forecast weather for 5 days
 const getForecastData = (city, unit) => (
   fetch(`${URL_API}forecast?q=${city + requestEnd(unit)}`)
-    .then(response => response.json())
-    .catch(err => log('err ', err))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('There is no such city');
+    })
+    // .then(response => response.json())
+    .catch(err => log(err))
 );
 
 // get weather by browser location

@@ -7,8 +7,11 @@ export default class PanelStorageCity {
     this.props = props;
   }
 
-  template = ({ name, country, temp }, unit) => `
+  template = ({
+    name, country, temp, id,
+  }, unit) => `
         <p>${name}, ${country} ${temp} ${unit}</p>
+        <button class="btnRemoveItem" attribute="{ name: 'cityId', content: ${id} }">x</button>
     `;
 
     changeTemplate = ({ detail: unit }) => {

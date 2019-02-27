@@ -1,4 +1,5 @@
 import Highcharts from 'highcharts';
+import * as moment from 'moment';
 import { getUnit, changeTemperature } from '../services/props';
 
 export default class PanelCityChart {
@@ -15,9 +16,10 @@ export default class PanelCityChart {
       tempMax: [],
       wind: [],
     };
-    list.splice(10);
+    list.splice(18);
     list.forEach((el) => {
-      res.time.push(el.dt_txt.split(' ')[1].slice(0, -3));
+      const hour = moment.unix(el.dt).format('H');
+      res.time.push(`${hour}h`);
       res.tempMin.push(el.main.temp_min);
       res.tempMax.push(el.main.temp_max);
       res.wind.push(el.wind.speed);
@@ -27,7 +29,7 @@ export default class PanelCityChart {
 
   render() {
     document.addEventListener('drawChart', ({ detail }) => {
-      this.city = detail.city;
+      this.city = detail.city.name;
       this.data = PanelCityChart.fillData(detail);
       this.add(getUnit());
     });
@@ -51,6 +53,12 @@ export default class PanelCityChart {
       xAxis: [{
         categories: this.data.time,
         crosshair: true,
+        labels: {
+          formatter() {
+            return `<p style="font-size: 9px;">${this.value}</p>`;
+          },
+          rotation: 0,
+        },
       }],
       yAxis: [{ // Primary yAxis
         labels: {
